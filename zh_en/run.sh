@@ -17,7 +17,7 @@ TMP_DIR=$PIPE_HOME/tmp
 # Model definition
 #####################################################################
 
-INI=/export/b06/huda/experiment/lorelei-dry-run//tuning/moses.ini.1
+INI=/export/b06/huda/experiment/lorelei-dry-run/model/moses.ini.1
 
 #####################################################################
 # Utility functions
@@ -95,9 +95,10 @@ if [ ! -f $MODEL_DIR/moses.ini ]; then
   # Convert Phrase table to minphr format
   # Make sure you don't regenerate it if it already exists
   # and the input phrase table has not changed
-  if grep -Fq "PhraseDictionaryOnDisk" $INI; then
+  if grep -Fq "PhraseDictionaryMemory" $INI; then
     # We need to binarize
-    diskPT=`grep "PhraseDictionaryOnDisk" $INI | sed -e 's/.*path=\([^ ]*\).*/\1/g' | sed s:.bin::`
+    diskPT=`grep "PhraseDictionaryMemory" $INI | sed -e 's/.*path=\([^ ]*\).*/\1/g' | sed s:.bin::`
+    diskPT="${diskPT}.gz"
     check_file_exists $diskPT
     errcho "Disk based phrase table found at $diskPT";
 
@@ -106,14 +107,14 @@ if [ ! -f $MODEL_DIR/moses.ini ]; then
 
     if [ ! -f ${out_min_PT}.minphr ]; then
       errcho "Did not find the min phrase table. Creating it."
-      cat $diskPT \
+      gzip -cd $diskPT \
         | LC_ALL=C sort --compress-program gzip -T $TMP_DIR \
         | gzip - > ${out_min_PT}.sorted.gz
       $MOSES/bin/processPhraseTableMin -in ${out_min_PT}.sorted.gz \
         -out ${out_min_PT}.minphr -nscores $N_PT_SCORES -threads 1
       rm ${out_min_PT}.sorted.gz
       # Record this in our local moses.ini
-      sed -i 's:PhraseDictionaryOnDisk:PhraseDictionaryCompact:' $local_INI
+      sed -i 's:PhraseDictionaryMemory:PhraseDictionaryCompact:' $local_INI
       sed -i "s:\(PhraseDictionaryCompact.*path=\)\([^ ]*\)\(.*\):\1${out_min_PT}\3:g" $local_INI
     else
       errcho "Found a min phrase table at ${out_min_PT}.minphr. Using that."
@@ -125,6 +126,7 @@ if [ ! -f $MODEL_DIR/moses.ini ]; then
   # Convert Lexical translation table to minphr format
   # Make sure you don't regenerate it if it already exists
   # and the input phrase table has not changed
+  echo "****************************************"
   lexT=`grep "LexicalReordering" $INI | grep path | sed -e 's/.*path=\([^ ]*\).*/\1/g'`
   errcho "Looking for a lexical translation table at ${lexT}.minlexr"
   if [ ! -f ${lexT}.minlexr ]; then
@@ -135,7 +137,7 @@ if [ ! -f $MODEL_DIR/moses.ini ]; then
       errcho "Did not find the min lexical translation table at ${out_min_LT}. Creating it"
       check_file_exists $lexT
 
-      cat $lexT \
+      gzip -cd $lexT \
         | LC_ALL=C sort --compress-program gzip -T $TMP_DIR \
         | gzip - > ${out_min_LT}.sorted.gz
       $MOSES/bin/processLexicalTableMin -in ${out_min_LT}.sorted.gz \
