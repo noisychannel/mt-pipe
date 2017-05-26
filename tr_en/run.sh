@@ -41,7 +41,7 @@ function check_file_exists() {
 }
 
 function show_help() {
-  errcho "MT pipeline for ZH-EN translation"
+  errcho "MT pipeline for TR-EN translation"
   errcho "usage: run.sh [-h] -s SOURCE -o OUTPUT [-n N] [-a]"
 }
 
@@ -220,4 +220,4 @@ else
 fi
 
 # Cleanup
-#rm $TMP_DIR/${UNIQ_RUN_NUM}.*
+rm $TMP_DIR/${UNIQ_RUN_NUM}.*
