@@ -42,7 +42,7 @@ function check_file_exists() {
 
 function show_help() {
   errcho "MT pipeline for TR-EN translation"
-  errcho "usage: run.sh [-h] -s SOURCE -o OUTPUT [-n N] [-a]"
+  errcho "usage: run.sh [-h] -s SOURCE -o OUTPUT [-n N] [-a] [-d]"
 }
 
 #####################################################################
@@ -54,9 +54,11 @@ N=1
 SOURCE=""
 OUTPUT=""
 ASR_CTM_INPUT=false
+DROP_UNK=false
+
 local_INI=$MODEL_DIR/moses.ini
 
-while getopts ":h?s:o:n:a" opt; do
+while getopts ":h?s:o:n:ad" opt; do
   case "$opt" in
   h|\?)
     show_help
@@ -69,6 +71,8 @@ while getopts ":h?s:o:n:a" opt; do
   n)  N=$OPTARG
     ;;
   a)  ASR_CTM_INPUT=true
+    ;;
+  d)  DROP_UNK=true
     ;;
   esac
 done
@@ -186,9 +190,15 @@ if [ $N -gt 1 ]; then
   n_best_cmd="-n-best-list output.best$N $N"
 fi
 
+
+drop_unk_cmd=""
+if [ "$DROP_UNK" = true ]; then
+  drop_unk_cmd="-drop-unknown"
+fi
+
 $MOSES/bin/moses.2016-08-22 -search-algorithm 1 -cube-pruning-pop-limit 5000 -s 5000 \
   -threads 6 -text-type "test" -v 0 -f  $local_INI \
-  $n_best_cmd \
+  $n_best_cmd $drop_unk_cmd \
   < $INPUT > $TMP_DIR/${UNIQ_RUN_NUM}.output
 
 
