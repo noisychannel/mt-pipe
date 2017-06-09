@@ -26,11 +26,6 @@ eg.
 echo "/export/b09/ws15gkumar/experiments/lorelei/mt_pipe/tr_en/run.sh \
   -s ~/work/experiments/lorelei/mt_pipe/tr_en/input.tr \
   -o ~/work/experiments/lorelei/mt_pipe/tr_en/out.en \
-<<<<<<< HEAD
   -a -d" \
   | qsub -l mem_free=40G,ram_free=40G -e ~/work/experiments/lorelei/mt_pipe/tr_en/log/tr.err`
-=======
-  -a" \
-  | qsub -l mem_free=40G,ram_free=40G -e ~/work/experiments/lorelei/mt_pipe/tr_en/log/tr.err
->>>>>>> 523e3f29591154579893236dc83fd27aa1f581e0
 ```
