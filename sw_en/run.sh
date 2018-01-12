@@ -9,7 +9,7 @@ OPTIND=1
 UNIQ_RUN_NUM=`date '+%Y%m%d%H%M%S'`
 
 MOSES=/home/pkoehn/moses
-PIPE_HOME=/export/b09/ws15gkumar/experiments/lorelei/mt_pipe/tr_en
+PIPE_HOME=/export/b09/ws15gkumar/experiments/lorelei/mt_pipe/sw_en
 MODEL_DIR=$PIPE_HOME/model
 TMP_DIR=$PIPE_HOME/tmp
 
@@ -17,8 +17,8 @@ TMP_DIR=$PIPE_HOME/tmp
 # Model definition
 #####################################################################
 
-INI=/export/b07/huda/experiment/wmt16-tr-en/model/moses.ini.1
-SOURCE_TC_MODEL=/export/b07/huda/experiment/wmt16-tr-en/truecaser/truecase-model.1.tr
+INI=/home/pkoehn/experiment/material-sw-en/tuning/moses.ini.1
+SOURCE_TC_MODEL=/home/pkoehn/experiment/material-sw-en/truecaser/truecase-model.1.sw
 
 #####################################################################
 # Utility functions
@@ -41,7 +41,7 @@ function check_file_exists() {
 }
 
 function show_help() {
-  errcho "MT pipeline for TR-EN translation"
+  errcho "MT pipeline for SW-EN translation"
   errcho "usage: run.sh [-h] -s SOURCE -o OUTPUT [-n N] [-a] [-d]"
 }
 
