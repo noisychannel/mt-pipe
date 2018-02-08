@@ -9,7 +9,7 @@ OPTIND=1
 UNIQ_RUN_NUM=`date '+%Y%m%d%H%M%S'`
 
 MOSES=/home/pkoehn/moses
-PIPE_HOME=/export/b09/ws15gkumar/experiments/lorelei/mt_pipe/sw_en
+PIPE_HOME=/export/b09/ws15gkumar/experiments/lorelei/mt_pipe/tl_en
 MODEL_DIR=$PIPE_HOME/model
 TMP_DIR=$PIPE_HOME/tmp
 
@@ -17,8 +17,8 @@ TMP_DIR=$PIPE_HOME/tmp
 # Model definition
 #####################################################################
 
-INI=/home/pkoehn/experiment/material-sw-en/tuning/moses.tuned.ini.1
-SOURCE_TC_MODEL=/home/pkoehn/experiment/material-sw-en/truecaser/truecase-model.1.sw
+INI=/home/pkoehn/experiment/material-tl-en/tuning/moses.tuned.ini.1
+SOURCE_TC_MODEL=/home/pkoehn/experiment/material-tl-en/truecaser/truecase-model.1.tl
 
 #####################################################################
 # Utility functions
