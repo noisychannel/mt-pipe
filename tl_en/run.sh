@@ -166,8 +166,10 @@ fi
 # Remove ASR seg IDs if they exist
 INPUT=$SOURCE
 if [ "$ASR_CTM_INPUT" = true ]; then
-  cat $SOURCE | cut -d' ' '-f1' > $TMP_DIR/${UNIQ_RUN_NUM}.input.ctm_tags
-  cat $SOURCE | cut -d' ' '-f2-' > $TMP_DIR/${UNIQ_RUN_NUM}.input
+  #cat $SOURCE | cut -d' ' '-f1' > $TMP_DIR/${UNIQ_RUN_NUM}.input.ctm_tags
+  #cat $SOURCE | cut -d' ' '-f2-' > $TMP_DIR/${UNIQ_RUN_NUM}.input
+  cat $SOURCE | awk '{print $1}' > $TMP_DIR/${UNIQ_RUN_NUM}.input.ctm_tags
+  cat $SOURCE | awk '{$1=""; print $0}' > $TMP_DIR/${UNIQ_RUN_NUM}.input
   INPUT=$TMP_DIR/${UNIQ_RUN_NUM}.input
 fi
 
@@ -230,4 +232,4 @@ else
 fi
 
 # Cleanup
-rm $TMP_DIR/${UNIQ_RUN_NUM}.*
+#rm $TMP_DIR/${UNIQ_RUN_NUM}.*
